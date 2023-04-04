@@ -1,4 +1,4 @@
-export interface temtem {
+export interface Temtem {
     wikiNumber: number;
     name: string;
     types: Array<string>;
