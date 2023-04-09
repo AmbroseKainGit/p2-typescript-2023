@@ -202,8 +202,6 @@ function init() {
   const temtemList = document.querySelector(".temtem-list");
   temtemList.addEventListener("click", (event) => {
     if (event.target.tagName === "DIV") {
-      console.log(event.target.parentNode);
-      console.log(event.target.parentNode.dataset);
       const temtemData = JSON.parse(event.target.parentNode.dataset.temtem);
       localStorage.setItem("selectedTemtem", JSON.stringify(temtemData));
       window.location.href = "detail.html"
