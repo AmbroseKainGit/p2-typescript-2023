@@ -6,6 +6,7 @@ export interface Temtem {
     wikiRenderStaticLumaUrl: string;
     wikiRenderStaticUrl: string;
     catchRate: number;
+    gameDescription: string;
     evolution: {
         evolves: boolean;
         name?: string;

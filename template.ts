@@ -226,116 +226,257 @@ window.addEventListener("load", init);
 export const generateDetailTemplate = () => {
     const html = `
     <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <style>
-          * {
-            padding: 0;
-            margin: 0;
-          }
-          body {
-            display: flex;
-            justify-content: center;
-          }
-          .detail-card {
-            display: flex;
-            flex-direction: column;
-            background-color: #faefd9;
-            width: 23em;
-            max-width: 100%;
-            border: 2px solid #b2738d;
-            border-radius: 10px;
-          }
-          .detail-card__name {
-            font-size: 20pt;
-            padding: 0.5em;
-            margin: 0.2em 0.2em 0 0.2em;
-            background: linear-gradient(#523351, #393351);
-            text-align: center;
-            border: 2px solid #b2738d;
-            border-radius: 4px;
-            color: #fcc56b;
-            text-shadow: 0 1px #8b8c99;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            font-family: sans-serif;
-          }
-          .detail-card__image {
-            background-size: contain;
-            width: 100%;
-            height: 15rem;
-            background-position: center;
-            background-repeat: no-repeat;
-          }
-          .detail-card__general__details {
-            background: linear-gradient(#523351, #393351);
-            text-align: center;
-            border: 2px solid #b2738d;
-            border-radius: 4px;
-            color: #fcc56b;
-            text-shadow: 0 1px #8b8c99;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            font-family: sans-serif;
-            margin: 0.2em 0.2em 0 0.2em;
-            padding: 0.2em;
-          }
-          .detail-card__general__details__grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-          }
-        </style>
-        <script>
-          function init() {
-            const cardName = document.querySelector(".detail-card__name");
-            const cardImage = document.querySelector(".detail-card__image");
-            const genderRatio = document.querySelector(".detail-card__general__details__gender-ratio");
-            const catchRate = document.querySelector(".detail-card__general__details__catch-rate");
-            const cardNumber = document.querySelector(
-              ".detail-card__general__details__number"
-            );
-            const typesContainer = document.querySelector(
-              ".detail-card__general__details__types"
-            );
-            let temtem = localStorage.getItem("selectedTemtem");
-            temtem = temtem && JSON.parse(temtem);
-            document.title = temtem.name;
-            cardName.textContent = temtem.name;
-            catchRate.textContent = temtem.catchRate;
-            typesContainer.textContent = temtem.types.join(" | ");
-            cardNumber.textContent = temtem.number;
-            genderRatio.textContent = 'Male: ' + temtem.genderRatio.male + ',' + ' female: ' + temtem.genderRatio.female;
-            cardImage.style.backgroundImage =
-              "url('" + temtem.wikiRenderAnimatedLumaUrl + "')";
-            console.log(temtem);
-          }
-          window.addEventListener("load", init);
-        </script>
-      </head>
-      <body>
-        <div class="detail-card">
-          <div class="detail-card__name"></div>
-          <div class="detail-card__image"></div>
-          <div class="detail-card__general__details">General Details</div>
-          <div class="detail-card__general__details__grid">
-            <div class="detail-card__general__details__title">No.</div>
-            <div class="detail-card__general__details__number"></div>
-            <div class="detail-card__general__details__title">Type</div>
-            <div class="detail-card__general__details__types"></div>
-          </div>
-          <div class="detail-card__general__details">Technical Details</div>
-          <div class="detail-card__general__details__grid">
-            <div class="detail-card__general__details__title">Gender Ratio</div>
-            <div class="detail-card__general__details__gender-ratio">Gender Ratio</div>
-            <div class="detail-card__general__details__title">Catch Rate</div>
-            <div class="detail-card__general__details__catch-rate">Catch Rate</div>
-          </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+      }
+      .detail-card {
+        display: flex;
+        flex-direction: column;
+        background-color: #faefd9;
+        width: 23em;
+        max-width: 100%;
+        border: 2px solid #b2738d;
+        border-radius: 10px;
+        padding-bottom: 0.5rem;
+      }
+      .detail-card__name {
+        font-size: 20pt;
+        padding: 0.5em;
+        margin: 0.2em 0.2em 0 0.2em;
+        background: linear-gradient(#523351, #393351);
+        text-align: center;
+        border: 2px solid #b2738d;
+        border-radius: 4px;
+        color: #fcc56b;
+        text-shadow: 0 1px #8b8c99;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        font-family: sans-serif;
+      }
+      .detail-card__image {
+        background-size: contain;
+        width: 100%;
+        height: 15rem;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .detail-card__general__description {
+        text-align: justify;
+        padding: 0.4rem;
+      }
+      .detail-card__general__details {
+        background: linear-gradient(#523351, #393351);
+        text-align: center;
+        border: 2px solid #b2738d;
+        border-radius: 4px;
+        color: #fcc56b;
+        text-shadow: 0 1px #8b8c99;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        font-family: sans-serif;
+        margin: 0.2em 0.2em 0 0.2em;
+        padding: 0.2em;
+      }
+      .detail-card__general__details__grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .detail-card__general__details__number {
+        align-items: center;
+        display: flex;
+        padding-left: 0.2rem;
+      }
+      .detail-card__general__details__types {
+        align-items: center;
+        display: flex;
+        padding-left: 0.2rem;
+      }
+      .detail-card__general__details__gender-ratio {
+        align-items: center;
+        display: flex;
+        padding-left: 0.2rem;
+      }
+      .detail-card__general__details__catch-rate {
+        align-items: center;
+        display: flex;
+        padding-left: 0.2rem;
+      }
+      .detail-card__general__details__title {
+        background-color: #7d5873;
+        text-align: right;
+        color: #fcc56b;
+        padding: 0.2em 0.7em;
+        margin-top: 0.1rem;
+        margin-left: 0.25rem;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        font-size: 10pt;
+      }
+      .detail-card__general__details__stats__grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        margin-left: 0.25em;
+        font-size: 11pt;
+        margin-top: .1rem;
+        gap: 0.1rem;
+      }
+      .detail-card__general__details__stats__grid__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 3rem;
+        border: 1px solid #875a7f;
+        border-radius: 5px;
+      }
+    </style>
+    <script>
+      function init() {
+        const cardName = document.querySelector(".detail-card__name");
+        const cardImage = document.querySelector(".detail-card__image");
+        const healthPoints = document.querySelector(
+          ".detail-card__general__details__stats__grid__item__hp"
+        );
+        const staminaPoints = document.querySelector(
+          ".detail-card__general__details__stats__grid__item__sta"
+        );
+        const speedPoints = document.querySelector(
+          ".detail-card__general__details__stats__grid__item__spd"
+        );
+        const attackPoints = document.querySelector(
+          ".detail-card__general__details__stats__grid__item__atk"
+        );
+        const defensePoints = document.querySelector(
+          ".detail-card__general__details__stats__grid__item__def"
+        );
+        const specialAttackPoints = document.querySelector(
+          ".detail-card__general__details__stats__grid__item__spatk"
+        );
+        const specialDefensePoints = document.querySelector(
+          ".detail-card__general__details__stats__grid__item__spdef"
+        );
+        const cardDescription = document.querySelector(
+          ".detail-card__general__description"
+        );
+        const genderRatio = document.querySelector(
+          ".detail-card__general__details__gender-ratio"
+        );
+        const catchRate = document.querySelector(
+          ".detail-card__general__details__catch-rate"
+        );
+        const cardNumber = document.querySelector(
+          ".detail-card__general__details__number"
+        );
+        const typesContainer = document.querySelector(
+          ".detail-card__general__details__types"
+        );
+        let temtem = localStorage.getItem("selectedTemtem");
+        temtem = temtem && JSON.parse(temtem);
+        document.title = temtem.name;
+        cardName.textContent = temtem.name;
+        cardNumber.textContent = temtem.number;
+        cardDescription.textContent = temtem.gameDescription;
+        catchRate.textContent = temtem.catchRate;
+        typesContainer.textContent = temtem.types.join(" | ");
+        healthPoints.textContent = temtem.stats.hp;
+        staminaPoints.textContent = temtem.stats.sta;
+        speedPoints.textContent = temtem.stats.spd;
+        attackPoints.textContent = temtem.stats.atk;
+        defensePoints.textContent = temtem.stats.def;
+        specialAttackPoints.textContent = temtem.stats.spatk;
+        specialDefensePoints.textContent = temtem.stats.spdef;
+        genderRatio.textContent =
+          "Male: " +
+          temtem.genderRatio.male +
+          "," +
+          " female: " +
+          temtem.genderRatio.female;
+        cardImage.style.backgroundImage =
+          "url('" + temtem.wikiRenderAnimatedLumaUrl + "')";
+        console.log(temtem);
+      }
+      window.addEventListener("load", init);
+    </script>
+  </head>
+  <body>
+    <div class="detail-card">
+      <div class="detail-card__name"></div>
+      <div class="detail-card__image"></div>
+      <div class="detail-card__general__details">General Details</div>
+      <div class="detail-card__general__details__grid">
+        <div class="detail-card__general__details__title">No.</div>
+        <div class="detail-card__general__details__number"></div>
+        <div class="detail-card__general__details__title">Type</div>
+        <div class="detail-card__general__details__types"></div>
+      </div>
+      <div class="detail-card__general__details">Technical Details</div>
+      <div class="detail-card__general__details__grid">
+        <div class="detail-card__general__details__title">Gender Ratio</div>
+        <div class="detail-card__general__details__gender-ratio"></div>
+        <div class="detail-card__general__details__title">Catch Rate</div>
+        <div class="detail-card__general__details__catch-rate">Catch Rate</div>
+      </div>
+      <div class="detail-card__general__details">Description</div>
+      <div class="detail-card__general__description"></div>
+      <div class="detail-card__general__details">Stats</div>
+      <div class="detail-card__general__details__stats__grid">
+        <div class="detail-card__general__details__stats__grid__item">
+          <p class="detail-card__general__details__stats__grid__item__title">
+            HP
+          </p>
+          <p class="detail-card__general__details__stats__grid__item__hp" style="margin-top: auto;"></p>
         </div>
-      </body>
-    </html>`
+        <div class="detail-card__general__details__stats__grid__item">
+          <p class="detail-card__general__details__stats__grid__item__title">
+            STA
+          </p>
+          <p class="detail-card__general__details__stats__grid__item__sta" style="margin-top: auto;"></p>
+        </div>
+        <div class="detail-card__general__details__stats__grid__item">
+          <p class="detail-card__general__details__stats__grid__item__title">
+            SPD
+          </p>
+          <p class="detail-card__general__details__stats__grid__item__spd" style="margin-top: auto;"></p>
+        </div>
+        <div class="detail-card__general__details__stats__grid__item">
+          <p class="detail-card__general__details__stats__grid__item__title">
+            ATK
+          </p>
+          <p class="detail-card__general__details__stats__grid__item__atk" style="margin-top: auto;"></p>
+        </div>
+        <div class="detail-card__general__details__stats__grid__item">
+          <p class="detail-card__general__details__stats__grid__item__title">
+            DEF
+          </p>
+          <p class="detail-card__general__details__stats__grid__item__def" style="margin-top: auto;"></p>
+        </div>
+        <div class="detail-card__general__details__stats__grid__item">
+          <p class="detail-card__general__details__stats__grid__item__title">
+            SPATK
+          </p>
+          <p class="detail-card__general__details__stats__grid__item__spatk" style="margin-top: auto;"></p>
+        </div>
+        <div class="detail-card__general__details__stats__grid__item">
+          <p class="detail-card__general__details__stats__grid__item__title">
+            SPDEF
+          </p>
+          <p class="detail-card__general__details__stats__grid__item__spdef" style="margin-top: auto;"></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+`
     return html;
 }
