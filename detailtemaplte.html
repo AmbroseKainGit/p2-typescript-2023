@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+      }
+      .detail-card {
+        display: flex;
+        flex-direction: column;
+        background-color: #faefd9;
+        width: 23em;
+        max-width: 100%;
+        border: 2px solid #b2738d;
+        border-radius: 10px;
+      }
+      .detail-card__name {
+        font-size: 20pt;
+        padding: 0.5em;
+        margin: 0.2em 0.2em 0 0.2em;
+        background: linear-gradient(#523351, #393351);
+        text-align: center;
+        border: 2px solid #b2738d;
+        border-radius: 4px;
+        color: #fcc56b;
+        text-shadow: 0 1px #8b8c99;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        font-family: sans-serif;
+      }
+      .detail-card__image {
+        background-size: contain;
+        width: 100%;
+        height: 15rem;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .detail-card__general__details {
+        background: linear-gradient(#523351, #393351);
+        text-align: center;
+        border: 2px solid #b2738d;
+        border-radius: 4px;
+        color: #fcc56b;
+        text-shadow: 0 1px #8b8c99;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        font-family: sans-serif;
+        margin: 0.2em 0.2em 0 0.2em;
+        padding: 0.2em;
+      }
+      .detail-card__general__details__grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    </style>
+    <script>
+      function init() {
+        const cardName = document.querySelector(".detail-card__name");
+        const cardImage = document.querySelector(".detail-card__image");
+        const genderRatio = document.querySelector(".detail-card__general__details__gender-ratio");
+        const catchRate = document.querySelector(".detail-card__general__details__catch-rate");
+        const cardNumber = document.querySelector(
+          ".detail-card__general__details__number"
+        );
+        const typesContainer = document.querySelector(
+          ".detail-card__general__details__types"
+        );
+        let temtem = localStorage.getItem("selectedTemtem");
+        temtem = temtem && JSON.parse(temtem);
+        document.title = temtem.name;
+        cardName.textContent = temtem.name;
+        catchRate.textContent = temtem.catchRate;
+        typesContainer.textContent = temtem.types.join(" | ");
+        cardNumber.textContent = temtem.number;
+        genderRatio.textContent = 'Male: ' + temtem.genderRatio.male + ',' + ' female: ' + temtem.genderRatio.female;
+        cardImage.style.backgroundImage =
+          "url('" + temtem.wikiRenderAnimatedLumaUrl + "')";
+        console.log(temtem);
+      }
+      window.addEventListener("load", init);
+    </script>
+  </head>
+  <body>
+    <div class="detail-card">
+      <div class="detail-card__name"></div>
+      <div class="detail-card__image"></div>
+      <div class="detail-card__general__details">General Details</div>
+      <div class="detail-card__general__details__grid">
+        <div class="detail-card__general__details__title">No.</div>
+        <div class="detail-card__general__details__number"></div>
+        <div class="detail-card__general__details__title">Type</div>
+        <div class="detail-card__general__details__types"></div>
+      </div>
+      <div class="detail-card__general__details">Technical Details</div>
+      <div class="detail-card__general__details__grid">
+        <div class="detail-card__general__details__title">Gender Ratio</div>
+        <div class="detail-card__general__details__gender-ratio">Gender Ratio</div>
+        <div class="detail-card__general__details__title">Catch Rate</div>
+        <div class="detail-card__general__details__catch-rate">Catch Rate</div>
+      </div>
+    </div>
+  </body>
+</html>
