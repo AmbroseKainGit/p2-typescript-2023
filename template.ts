@@ -340,6 +340,20 @@ export const generateDetailTemplate = () => {
         border: 1px solid #875a7f;
         border-radius: 5px;
       }
+      .back-button{
+        text-decoration: none;
+        position: absolute;
+        left: 5px;
+        top: 25px;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        justify-content: center;
+        background: linear-gradient(#523351, #393351);
+        border-radius: 50%;
+        color: #fcc56b;
+        font-size: 20pt;
+      }
     </style>
     <script>
       function init() {
@@ -404,12 +418,12 @@ export const generateDetailTemplate = () => {
           temtem.genderRatio.female;
         cardImage.style.backgroundImage =
           "url('" + temtem.wikiRenderAnimatedLumaUrl + "')";
-        console.log(temtem);
       }
       window.addEventListener("load", init);
     </script>
   </head>
   <body>
+    <a href="index.html" class="back-button">&#8592;</a>
     <div class="detail-card">
       <div class="detail-card__name"></div>
       <div class="detail-card__image"></div>
