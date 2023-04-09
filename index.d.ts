@@ -1,8 +1,10 @@
 export interface Temtem {
-    wikiNumber: number;
+    number: number;
     name: string;
     types: Array<string>;
     wikiRenderAnimatedLumaUrl: string;
+    wikiRenderStaticLumaUrl: string;
+    wikiRenderStaticUrl: string;
     catchRate: number;
     evolution: {
         evolves: boolean;
