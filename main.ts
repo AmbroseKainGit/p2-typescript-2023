@@ -1,7 +1,9 @@
 import { writeFile } from "fs/promises";
 import { generateMainTemplate, generateDetailTemplate } from './template.ts';
 const mainHtml = generateMainTemplate();
-const detailHtml = generateDetailTemplate();
+const detailPages = generateDetailTemplate();
 await writeFile('index.html', mainHtml);
-await writeFile('detail.html', detailHtml);
+for (const page of detailPages) {
+    await writeFile(`${page.name}.html`, page.content);
+}
 

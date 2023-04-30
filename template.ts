@@ -1,14 +1,14 @@
 import { fetchData } from './fetch.ts';
 const temtemData = await fetchData();
 const generateCardList = () => {
-    let html = "";
-    for (const temtem of temtemData) {
-        html += `<div class="card" >
+  let html = "";
+  for (const temtem of temtemData) {
+    html += `<div class="card" >
         <div class="content">
           <div class="back">
             <div class="back-content" style="background-image:url(${temtem.wikiRenderStaticUrl});"></div>
           </div>
-          <div class="front" data-temtem='${JSON.stringify(temtem).replace(/'/g, '')}'>
+          <div class="front" data-redirect='${temtem.name}.html'>
             <div class="img" style="background-image:url(${temtem.wikiRenderStaticLumaUrl});"></div>
             <div class="front-content">
               <small class="badge">${temtem.number}</small>
@@ -24,11 +24,11 @@ const generateCardList = () => {
           </div>
         </div>
       </div>`;
-    }
-    return html;
+  }
+  return html;
 }
 export const generateMainTemplate = () => {
-    const html = `
+  const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -202,9 +202,8 @@ function init() {
   const temtemList = document.querySelector(".temtem-list");
   temtemList.addEventListener("click", (event) => {
     if (event.target.tagName === "DIV") {
-      const temtemData = JSON.parse(event.target.parentNode.dataset.temtem);
-      localStorage.setItem("selectedTemtem", JSON.stringify(temtemData));
-      window.location.href = "detail.html"
+      const redirectUrl = event.target.parentNode.dataset.redirect;
+      window.location.href = redirectUrl;
     }
   });
 }
@@ -219,9 +218,11 @@ window.addEventListener("load", init);
 </body>
 </html>
 `;
-    return html;
+  return html;
 }
 export const generateDetailTemplate = () => {
+  const pages = [];
+  for (const temtem of temtemData) {
     const html = `
     <!DOCTYPE html>
 <html lang="en">
@@ -353,142 +354,78 @@ export const generateDetailTemplate = () => {
         font-size: 20pt;
       }
     </style>
-    <script>
-      function init() {
-        const cardName = document.querySelector(".detail-card__name");
-        const cardImage = document.querySelector(".detail-card__image");
-        const healthPoints = document.querySelector(
-          ".detail-card__general__details__stats__grid__item__hp"
-        );
-        const staminaPoints = document.querySelector(
-          ".detail-card__general__details__stats__grid__item__sta"
-        );
-        const speedPoints = document.querySelector(
-          ".detail-card__general__details__stats__grid__item__spd"
-        );
-        const attackPoints = document.querySelector(
-          ".detail-card__general__details__stats__grid__item__atk"
-        );
-        const defensePoints = document.querySelector(
-          ".detail-card__general__details__stats__grid__item__def"
-        );
-        const specialAttackPoints = document.querySelector(
-          ".detail-card__general__details__stats__grid__item__spatk"
-        );
-        const specialDefensePoints = document.querySelector(
-          ".detail-card__general__details__stats__grid__item__spdef"
-        );
-        const cardDescription = document.querySelector(
-          ".detail-card__general__description"
-        );
-        const genderRatio = document.querySelector(
-          ".detail-card__general__details__gender-ratio"
-        );
-        const catchRate = document.querySelector(
-          ".detail-card__general__details__catch-rate"
-        );
-        const cardNumber = document.querySelector(
-          ".detail-card__general__details__number"
-        );
-        const typesContainer = document.querySelector(
-          ".detail-card__general__details__types"
-        );
-        let temtem = localStorage.getItem("selectedTemtem");
-        temtem = temtem && JSON.parse(temtem);
-        document.title = temtem.name;
-        cardName.textContent = temtem.name;
-        cardNumber.textContent = temtem.number;
-        cardDescription.textContent = temtem.gameDescription;
-        catchRate.textContent = temtem.catchRate;
-        typesContainer.textContent = temtem.types.join(" | ");
-        healthPoints.textContent = temtem.stats.hp;
-        staminaPoints.textContent = temtem.stats.sta;
-        speedPoints.textContent = temtem.stats.spd;
-        attackPoints.textContent = temtem.stats.atk;
-        defensePoints.textContent = temtem.stats.def;
-        specialAttackPoints.textContent = temtem.stats.spatk;
-        specialDefensePoints.textContent = temtem.stats.spdef;
-        genderRatio.textContent =
-          "Male: " +
-          temtem.genderRatio.male +
-          "," +
-          " female: " +
-          temtem.genderRatio.female;
-        cardImage.style.backgroundImage =
-          "url('" + temtem.wikiRenderAnimatedLumaUrl + "')";
-      }
-      window.addEventListener("load", init);
-    </script>
   </head>
   <body>
     <a href="index.html" class="back-button">&#8592;</a>
     <div class="detail-card">
-      <div class="detail-card__name"></div>
-      <div class="detail-card__image"></div>
+      <div class="detail-card__name">${temtem.name}</div>
+      <div class="detail-card__image" style="background-image:url(${temtem.wikiRenderAnimatedLumaUrl});"></div>
       <div class="detail-card__general__details">General Details</div>
       <div class="detail-card__general__details__grid">
         <div class="detail-card__general__details__title">No.</div>
-        <div class="detail-card__general__details__number"></div>
+        <div class="detail-card__general__details__number">${temtem.number}</div>
         <div class="detail-card__general__details__title">Type</div>
-        <div class="detail-card__general__details__types"></div>
+        <div class="detail-card__general__details__types">${temtem.types.join(" | ")}</div>
       </div>
       <div class="detail-card__general__details">Technical Details</div>
       <div class="detail-card__general__details__grid">
         <div class="detail-card__general__details__title">Gender Ratio</div>
-        <div class="detail-card__general__details__gender-ratio"></div>
+        <div class="detail-card__general__details__gender-ratio">Male: ${temtem.genderRatio.male}, female: ${temtem.genderRatio.female}</div>
         <div class="detail-card__general__details__title">Catch Rate</div>
-        <div class="detail-card__general__details__catch-rate">Catch Rate</div>
+        <div class="detail-card__general__details__catch-rate">${temtem.catchRate}</div>
       </div>
       <div class="detail-card__general__details">Description</div>
-      <div class="detail-card__general__description"></div>
+      <div class="detail-card__general__description">${temtem.gameDescription}</div>
       <div class="detail-card__general__details">Stats</div>
       <div class="detail-card__general__details__stats__grid">
         <div class="detail-card__general__details__stats__grid__item">
           <p class="detail-card__general__details__stats__grid__item__title">
             HP
           </p>
-          <p class="detail-card__general__details__stats__grid__item__hp" style="margin-top: auto;"></p>
+          <p class="detail-card__general__details__stats__grid__item__hp" style="margin-top: auto;">${temtem.stats.hp}</p>
         </div>
         <div class="detail-card__general__details__stats__grid__item">
           <p class="detail-card__general__details__stats__grid__item__title">
             STA
           </p>
-          <p class="detail-card__general__details__stats__grid__item__sta" style="margin-top: auto;"></p>
+          <p class="detail-card__general__details__stats__grid__item__sta" style="margin-top: auto;">${temtem.stats.sta}</p>
         </div>
         <div class="detail-card__general__details__stats__grid__item">
           <p class="detail-card__general__details__stats__grid__item__title">
             SPD
           </p>
-          <p class="detail-card__general__details__stats__grid__item__spd" style="margin-top: auto;"></p>
+          <p class="detail-card__general__details__stats__grid__item__spd" style="margin-top: auto;">${temtem.stats.spd}</p>
         </div>
         <div class="detail-card__general__details__stats__grid__item">
           <p class="detail-card__general__details__stats__grid__item__title">
             ATK
           </p>
-          <p class="detail-card__general__details__stats__grid__item__atk" style="margin-top: auto;"></p>
+          <p class="detail-card__general__details__stats__grid__item__atk" style="margin-top: auto;">${temtem.stats.atk}</p>
         </div>
         <div class="detail-card__general__details__stats__grid__item">
           <p class="detail-card__general__details__stats__grid__item__title">
             DEF
           </p>
-          <p class="detail-card__general__details__stats__grid__item__def" style="margin-top: auto;"></p>
+          <p class="detail-card__general__details__stats__grid__item__def" style="margin-top: auto;">${temtem.stats.def}</p>
         </div>
         <div class="detail-card__general__details__stats__grid__item">
           <p class="detail-card__general__details__stats__grid__item__title">
             SPATK
           </p>
-          <p class="detail-card__general__details__stats__grid__item__spatk" style="margin-top: auto;"></p>
+          <p class="detail-card__general__details__stats__grid__item__spatk" style="margin-top: auto;">${temtem.stats.spatk}</p>
         </div>
         <div class="detail-card__general__details__stats__grid__item">
           <p class="detail-card__general__details__stats__grid__item__title">
             SPDEF
           </p>
-          <p class="detail-card__general__details__stats__grid__item__spdef" style="margin-top: auto;"></p>
+          <p class="detail-card__general__details__stats__grid__item__spdef" style="margin-top: auto;">${temtem.stats.spdef}</p>
         </div>
       </div>
     </div>
   </body>
 </html>
 `
-    return html;
+    pages.push({ name: temtem.name, content: html });
+  }
+  return pages;
 }
